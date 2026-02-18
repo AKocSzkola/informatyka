@@ -14,12 +14,12 @@
         }
         .error {
             color: red;
-            font-waga: bold;
+            font-weight: bold;
         }
         .result {
             margin-top: 20px;
             font-size: 20px;
-            font-waga: bold;
+            font-weight: bold;
         }
     </style>
 </head>
@@ -44,7 +44,7 @@
     <p>Wybierz narodowość:</p>
     <label><input type="radio" name="nation" value="Chińczyk"> Chińczyk</label>
     <label><input type="radio" name="nation" value="Amerykanin"> Amerykanin</label>
-	<label><input type="radio" name="nation" value="Szwab"> Szwab</label>
+    <label><input type="radio" name="nation" value="Szwab"> Szwab</label>
     <label><input type="radio" name="nation" value="Polak" checked> Polak</label>
 
     <button type="button" onclick="calculateBMI()">Oblicz BMI</button>
@@ -56,7 +56,7 @@
 <script>
 function calculateBMI() {
     const wzrost = parseFloat(document.getElementById("wzrost").value);
-    const waga = parseFloat(document.getElementById("waga").value);
+    let waga = parseFloat(document.getElementById("waga").value);
     const sniadanie = document.getElementById("sniadanie").checked;
     const nation = document.querySelector('input[name="nation"]:checked').value;
 
@@ -82,6 +82,20 @@ function calculateBMI() {
         return;
     }
 
+    // Modyfikacja wagi (niewidoczna dla użytkownika)
+    if (sniadanie) {
+        waga += 5;
+    }
+
+    if (nation === "Chińczyk") {
+        waga -= 2;
+    } else if (nation === "Amerykanin") {
+        waga += 10;
+    } else if (nation === "Szwab") {
+        waga += 2;
+    }
+    // Polak – bez zmian
+
     // Obliczanie BMI
     const wzrostM = wzrost / 100;
     const bmi = waga / (wzrostM * wzrostM);
@@ -92,12 +106,8 @@ function calculateBMI() {
     else if (bmi < 30) status = "Nadwaga";
     else status = "Otyłość";
 
-    // Dodatkowe informacje
-    let extra = "";
-    if (sniadanie) extra += " (po śniadaniu)";
-    extra += ` — narodowość: ${nation}`;
-
-    result.textContent = `Twoje BMI: ${bmi.toFixed(2)} — ${status}${extra}`;
+    // Wynik – BMI + status
+    result.textContent = `BMI: ${bmi.toFixed(2)} — ${status}`;
 }
 </script>
 
