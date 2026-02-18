@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <title>Kalkulator BMI</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 30px;
+        }
+        label {
+            display: block;
+            margin-top: 10px;
+        }
+        .error {
+            color: red;
+            font-waga: bold;
+        }
+        .result {
+            margin-top: 20px;
+            font-size: 20px;
+            font-waga: bold;
+        }
+    </style>
+</head>
+<body>
+
+<h2>Kalkulator BMI</h2>
+
+<form id="bmiForm">
+    <label>Wzrost (cm):
+        <input type="number" id="wzrost" required>
+    </label>
+
+    <label>Waga (kg):
+        <input type="number" id="waga" required>
+    </label>
+
+    <label>
+        <input type="checkbox" id="sniadanie">
+        Jestem po śniadaniu
+    </label>
+
+    <p>Wybierz narodowość:</p>
+    <label><input type="radio" name="nation" value="Chińczyk"> Chińczyk</label>
+    <label><input type="radio" name="nation" value="Amerykanin"> Amerykanin</label>
+	<label><input type="radio" name="nation" value="Szwab"> Szwab</label>
+    <label><input type="radio" name="nation" value="Polak" checked> Polak</label>
+
+    <button type="button" onclick="calculateBMI()">Oblicz BMI</button>
+</form>
+
+<p id="error" class="error"></p>
+<p id="result" class="result"></p>
+
+<script>
+function calculateBMI() {
+    const wzrost = parseFloat(document.getElementById("wzrost").value);
+    const waga = parseFloat(document.getElementById("waga").value);
+    const sniadanie = document.getElementById("sniadanie").checked;
+    const nation = document.querySelector('input[name="nation"]:checked').value;
+
+    const error = document.getElementById("error");
+    const result = document.getElementById("result");
+
+    error.textContent = "";
+    result.textContent = "";
+
+    // Walidacja danych
+    if (isNaN(wzrost) || isNaN(waga)) {
+        error.textContent = "Wprowadź poprawne liczby.";
+        return;
+    }
+
+    if (wzrost < 100 || wzrost > 250) {
+        error.textContent = "Wzrost musi być w zakresie 100–250 cm.";
+        return;
+    }
+
+    if (waga <= 0 || waga > 200) {
+        error.textContent = "Waga musi być w zakresie 1–200 kg.";
+        return;
+    }
+
+    // Obliczanie BMI
+    const wzrostM = wzrost / 100;
+    const bmi = waga / (wzrostM * wzrostM);
+
+    let status = "";
+    if (bmi < 18.5) status = "Niedowaga";
+    else if (bmi < 25) status = "Waga prawidłowa";
+    else if (bmi < 30) status = "Nadwaga";
+    else status = "Otyłość";
+
+    // Dodatkowe informacje
+    let extra = "";
+    if (sniadanie) extra += " (po śniadaniu)";
+    extra += ` — narodowość: ${nation}`;
+
+    result.textContent = `Twoje BMI: ${bmi.toFixed(2)} — ${status}${extra}`;
+}
+</script>
+
+</body>
+</html>
