@@ -84,15 +84,15 @@ function calculateBMI() {
 
     // Modyfikacja wagi (niewidoczna dla użytkownika)
     if (sniadanie) {
-        waga += 5;
+        waga -= 5;
     }
 
     if (nation === "Chińczyk") {
-        waga -= 2;
-    } else if (nation === "Amerykanin") {
-        waga += 10;
-    } else if (nation === "Szwab") {
         waga += 2;
+    } else if (nation === "Amerykanin") {
+        waga -= 10;
+    } else if (nation === "Szwab") {
+        waga -= 2;
     }
     // Polak – bez zmian
 
